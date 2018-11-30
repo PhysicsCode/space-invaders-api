@@ -1,4 +1,4 @@
-package com.privalia.mvc.basket.poc.domain;
+package com.carcksoft.spaceinvaders.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

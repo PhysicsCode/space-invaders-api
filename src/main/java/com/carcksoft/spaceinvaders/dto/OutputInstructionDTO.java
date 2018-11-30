@@ -1,4 +1,4 @@
-package com.privalia.mvc.basket.poc.dto;
+package com.carcksoft.spaceinvaders.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
