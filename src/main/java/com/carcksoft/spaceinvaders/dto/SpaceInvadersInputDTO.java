@@ -1,10 +1,10 @@
-package com.privalia.mvc.basket.poc.dto;
+package com.carcksoft.spaceinvaders.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.privalia.mvc.basket.poc.domain.Location;
-import com.privalia.mvc.basket.poc.domain.LocationWithMeta;
-import com.privalia.mvc.basket.poc.domain.Sizing;
-import com.privalia.mvc.basket.poc.domain.VisibleArea;
+import com.carcksoft.spaceinvaders.domain.Location;
+import com.carcksoft.spaceinvaders.domain.LocationWithMeta;
+import com.carcksoft.spaceinvaders.domain.Sizing;
+import com.carcksoft.spaceinvaders.domain.VisibleArea;
 import lombok.Data;
 
 import java.util.ArrayList;

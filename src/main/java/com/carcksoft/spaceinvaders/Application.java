@@ -1,4 +1,4 @@
-package com.privalia.mvc.basket.poc;
+package com.carcksoft.spaceinvaders;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

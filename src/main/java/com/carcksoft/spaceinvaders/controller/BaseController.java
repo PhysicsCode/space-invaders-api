@@ -1,8 +1,8 @@
-package com.privalia.mvc.basket.poc.controller;
+package com.carcksoft.spaceinvaders.controller;
 
-import com.privalia.mvc.basket.poc.dto.PlayerInfoOutput;
-import com.privalia.mvc.basket.poc.dto.SpaceInvadersInputDTO;
-import com.privalia.mvc.basket.poc.service.SpaceIntelligenceService;
+import com.carcksoft.spaceinvaders.dto.PlayerInfoOutput;
+import com.carcksoft.spaceinvaders.dto.SpaceInvadersInputDTO;
+import com.carcksoft.spaceinvaders.service.SpaceIntelligenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/")
