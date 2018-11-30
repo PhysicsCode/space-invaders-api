@@ -1,28 +1,28 @@
 server:
-  port: 8081
+  port: 8080
 
-spring:
-  datasource:
-    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MV_STORE=FALSE;MVCC=FALSE
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-    platform: h2
-    initialization-mode: always
-    hikari:
-      maximum-pool-size: 100
+#spring:
+  #datasource:
+  #  url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MV_STORE=FALSE;MVCC=FALSE
+  #  username: sa
+  #  password:
+  #  driver-class-name: org.h2.Driver
+  #  platform: h2
+  #  initialization-mode: always
+  #  hikari:
+  #    maximum-pool-size: 100
 
   # enable H2 web console and set url for web console
   # http://localhost:8080/console
-  h2:
-    console:
-      enabled: true
-      path: /console
+  #h2:
+  #  console:
+  #    enabled: true
+  #    path: /console
 
-  jpa:
-    properties:
-      hibernate:
-        type: trace
-        show_sql: true
-        use_sql_comments: true
-        format_sql: true
+  #jpa:
+  #  properties:
+  #    hibernate:
+  #      type: trace
+  #      show_sql: true
+  #      use_sql_comments: true
+  #      format_sql: true
