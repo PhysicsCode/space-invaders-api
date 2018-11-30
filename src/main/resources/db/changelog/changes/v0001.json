@@ -1,0 +1,96 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "1-create-table-structure",
+        "author": "yo momma is reactive",
+        "changes": [
+          {
+            "createTable": {
+              "tableName": "basket",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "owner_name",
+                    "type": "varchar(40)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "update_time",
+                    "type": "timestamp"
+                  }
+                }
+              ]
+            }
+          }, {
+            "createTable": {
+              "tableName": "basket_item",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "int",
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "basket_id",
+                    "type": "int",
+                    "constraints": {
+                      "foreignKeyName": "basket_id_fk",
+                      "references": "basket(id)",
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "item_id",
+                    "type": "int",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },{
+                  "column": {
+                    "name": "amount",
+                    "type": "int",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "update_time",
+                    "type": "timestamp"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
