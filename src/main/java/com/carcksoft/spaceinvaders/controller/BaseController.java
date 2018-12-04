@@ -27,7 +27,7 @@ public class BaseController {
 
     @PostMapping(path = "/move",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity postItemsToNewBasket(@RequestBody SpaceInvadersInputDTO input) {
+    public ResponseEntity calculatePlayerAction(@RequestBody SpaceInvadersInputDTO input) {
 
         return ResponseEntity.ok().body(spaceIntelligenceService.calculateNextStep(input));
     }

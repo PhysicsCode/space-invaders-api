@@ -9,5 +9,5 @@ import lombok.Setter;
 public class LocationWithMeta extends Location{
 
     @JsonProperty
-    private String neutral;
+    private Boolean neutral;
 }
