@@ -13,7 +13,7 @@ public class GameRepository{
 
     private static final Integer MAX_ENTRIES = 100;
 
-    private Map<String, Game> gameMap = new LinkedHashMap<String, Game>(MAX_ENTRIES,7f, true){
+    private Map<String, Game> gameMap = new LinkedHashMap<String, Game>(MAX_ENTRIES,0.7f, true){
 
         @Override
         protected boolean removeEldestEntry(Map.Entry eldest) {

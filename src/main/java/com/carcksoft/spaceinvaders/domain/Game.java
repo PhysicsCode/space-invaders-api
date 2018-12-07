@@ -29,20 +29,20 @@ public class Game {
 
     //------------------- BOARD CREATION -------------------
 
-    private  LayoutEntity[][] startBoard(int height, int width) {
+    private LayoutEntity[][] startBoard(int height, int width) {
 
         LayoutEntity[][] array = new LayoutEntity[height][width];
 
         Arrays.fill(array[0], LayoutEntity.WALL);
 
-        for (int i= 1; i< height-1; i++) {
+        for (int i = 1; i < height - 1; i++) {
 
             Arrays.fill(array[i], LayoutEntity.UNKNOWN);
             array[i][0] = LayoutEntity.WALL;
-            array[i][width-1] = LayoutEntity.WALL;
+            array[i][width - 1] = LayoutEntity.WALL;
         }
 
-        Arrays.fill(array[height-1], LayoutEntity.WALL);
+        Arrays.fill(array[height - 1], LayoutEntity.WALL);
 
         return array;
     }
@@ -70,8 +70,8 @@ public class Game {
 
     public void fillBoardVoids(VisibleArea visibleArea) {
 
-        for (int i = visibleArea.getStartX(); i< visibleArea.getEndX(); i++) {
-            for (int j = visibleArea.getStartY(); j< visibleArea.getEndY(); j++) {
+        for (int i = visibleArea.getStartX(); i < visibleArea.getEndX(); i++) {
+            for (int j = visibleArea.getStartY(); j < visibleArea.getEndY(); j++) {
 
                 if (board[j][i].equals(LayoutEntity.UNKNOWN)) {
                     board[j][i] = LayoutEntity.EMPTY;
@@ -102,11 +102,82 @@ public class Game {
 
 
     //------------------- DDD ENTITY CALCULATIONS -------------------
-    private boolean calculateTargettability(Location location) {
+    private Hazard.Targettability calculateTargettability(Location location) {
 
-        //TODO complete code
+        int playerX = playerLocation.getX();
+        int playerY = playerLocation.getY();
+
+        int x = location.getX();
+        int y = location.getY();
+
+        int signX = Integer.signum(playerX - x);
+        int signY = Integer.signum(playerY - y);
+
+        if (signX == 0 || signY == 0) {
+
+            for (;x != playerX && y != playerY;) {
+
+                x = x - signX;
+                y = y - signY;
+
+                if (board[y][x].equals(LayoutEntity.WALL)) {
+                    return Hazard.Targettability.NOPE;
+                }
+            }
+
+            if (signX == 0 && signY == -1){
+                return Hazard.Targettability.DOWN;
+            }
+
+            if (signX == -1 && signY == 0){
+                return Hazard.Targettability.RIGHT;
+            }
+
+            if (signX == 0 && signY == 1){
+                return Hazard.Targettability.UP;
+            }
+
+            if (signX == 1 && signY == 0){
+                return Hazard.Targettability.LEFT;
+            }
+        }
+
+        return Hazard.Targettability.NOPE;
+
+        /**
+        if (x == playerX) {
+
+            if (isTargetForCoordinate(x, y, targetX)) {
+                return true;
+            }
+
+            while (x != playerX) {
+
+                x = x - Integer.signum(x - playerX);
+                if (board[y][x].equals(LayoutEntity.WALL)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        if (y == playerY) {
+
+            while (y != playerY) {
+
+                y = y - Integer.signum(y - playerY);
+                if (board[y][x].equals(LayoutEntity.WALL)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         return false;
+
+         **/
     }
 
     private boolean calculateWithinRoom(Location location) {
