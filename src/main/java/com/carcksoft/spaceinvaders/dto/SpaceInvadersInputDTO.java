@@ -62,7 +62,7 @@ public class SpaceInvadersInputDTO {
     public static class BoardDTO {
 
         @JsonProperty("size")
-        private Sizing gameId;
+        private Sizing size;
 
         @JsonProperty("walls")
         private List<Location> wallsLocation = new ArrayList<>();

@@ -8,6 +8,10 @@ import lombok.Setter;
 @Setter
 public class LocationWithMeta extends Location{
 
+    public LocationWithMeta(int x, int y) {
+        super(x, y);
+    }
+
     @JsonProperty
-    private String neutral;
+    private Boolean neutral;
 }
