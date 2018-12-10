@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -26,6 +27,10 @@ public class StrategyService {
                                 .filter(hazard -> !hazard.getTargettable().equals(Hazard.Targettability.NOPE))
                                 .collect(Collectors.toCollection(HashSet::new));
 
+        Set<Hazard> secondLevelHazards = game.getPhantomSet().stream()
+                                .filter(hazard -> hazard.getDistanceToPlayer() == 2)
+                                .collect(Collectors.toSet());
+
         Map<Hazard, Hazard.Targettability> phantomsTouching = phantomsOnSight.stream()
                                 .filter(hazard -> hazard.getDistanceToPlayer() == 1)
                                 .collect(Collectors.toMap(hazard -> hazard, Hazard::getTargettable));
@@ -33,6 +38,8 @@ public class StrategyService {
         Map<Hazard, Hazard.Targettability> playersTouching = playersOnSight.stream()
                                 .filter(hazard -> hazard.getDistanceToPlayer() == 1)
                                 .collect(Collectors.toMap(hazard -> hazard, Hazard::getTargettable));
+
+
 
 
         Map<Hazard.Targettability, StuffInContact> contactMap = fillContactMapWithLayout(game.getBoard(), game.getPlayerLocation());
@@ -49,15 +56,15 @@ public class StrategyService {
                 // only 1
                 if (playersOnSight.size() == 1) {
 
-                    //shoot him
-                    return targettableToShootInstruction(playersOnSight.stream().findFirst().get().getTargettable());
+                    //shoot kebab
+                    return kebabCase(phantomsOnSight, playersOnSight);
 
                 // more than 1 in line
                 } else if (playersInLine(playersOnSight))  {
 
                     //phantom or wall blocking 1 direction or else everything blocked
 
-                    Hazard.Targettability target = calculateFreeDirectionToRun(contactMap);
+                    Hazard.Targettability target = calculateFreeDirectionToRun(contactMap, secondLevelHazards, game.getPlayerLocation());
 
                     if (target != null) {
                         return targettableToMoveInstruction(target);
@@ -82,7 +89,7 @@ public class StrategyService {
                     if (contactMap.containsValue(StuffInContact.NEUTRAL_PHANTOM)) {
 
                         //move towards it if safe
-                        Hazard.Targettability target = calculateFreeDirectionToRun(contactMap);
+                        Hazard.Targettability target = calculateFreeDirectionToRun(contactMap, secondLevelHazards, game.getPlayerLocation());
 
                         if (target != null) {
                             return targettableToMoveInstruction(target);
@@ -108,7 +115,7 @@ public class StrategyService {
                 } else if (canRunFromPhantoms(contactMap)) {
 
                     //move in opposite direction (best for points perhaps not active ghost?)
-                    return targettableToShootInstruction(calculateFreeDirectionToRun(contactMap));
+                    return targettableToShootInstruction(calculateFreeDirectionToRun(contactMap, secondLevelHazards, game.getPlayerLocation()));
 
                 //active phantom kebab - 4 ...
                 } else {
@@ -120,7 +127,7 @@ public class StrategyService {
         //calculate safe locations near and move towards one
         }
 
-        Hazard.Targettability target = calculateFreeDirectionToRun(contactMap);
+        Hazard.Targettability target = calculateFreeDirectionToRun(contactMap, secondLevelHazards, game.getPlayerLocation());
 
         if (target != null) {
             return targettableToMoveInstruction(target);
@@ -171,7 +178,7 @@ public class StrategyService {
         return contactMap.entrySet().stream().anyMatch(entry -> entry.getValue().equals(StuffInContact.NOTHING) || entry.getValue().equals(StuffInContact.NEUTRAL_PHANTOM));
     }
 
-    private Hazard.Targettability calculateFreeDirectionToRun(Map<Hazard.Targettability, StuffInContact> contactMap) {
+    private Hazard.Targettability calculateFreeDirectionToRun(Map<Hazard.Targettability, StuffInContact> contactMap, Set<Hazard> secondLevelHazards, Location playerLocation) {
 
         Set<Hazard.Targettability> neutralPhantom = contactMap.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(StuffInContact.NEUTRAL_PHANTOM))
@@ -187,10 +194,53 @@ public class StrategyService {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
 
-        ArrayList<Hazard.Targettability> moveList = new ArrayList<>(movableDirections);
+        Set<Hazard.Targettability> nextHazards = contactMap.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(StuffInContact.PLAYER) || entry.getValue().equals(StuffInContact.PHANTOM))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+
+        if (secondLevelHazards.isEmpty() && nextHazards.isEmpty()) {
+            //navigateMaze
+        }
+
+        Set<Hazard.Targettability> secondLevelDrama = obtainDramaLocationsByPhantomMovement(movableDirections, secondLevelHazards, playerLocation);
+
+        ArrayList<Hazard.Targettability> moveList = new ArrayList<>(secondLevelDrama);
+
         Collections.shuffle(moveList);
 
         return Optional.ofNullable(moveList.get(0)).orElse(null);
+    }
+
+    private Set<Hazard.Targettability> obtainDramaLocationsByPhantomMovement(Set<Hazard.Targettability> movableDirections, Set<Hazard> secondLevelHazards, Location playerLocation) {
+
+        int x = playerLocation.getX();
+        int y = playerLocation.getY();
+
+        HashSet<Hazard.Targettability> secondaryHazardMovableDirections = new HashSet<>(movableDirections);
+
+        Set<Location> criticalUpLocations = Stream.of(new Location(x-1, y-1), new Location(x, y-2), new Location(x+1, y-1)).collect(Collectors.toSet());
+        Set<Location> criticalLeftLocations = Stream.of(new Location(x-1, y-1), new Location(x-2, y), new Location(x-1, y+1)).collect(Collectors.toSet());
+        Set<Location> criticalDownLocations = Stream.of(new Location(x-1, y+1), new Location(x, y+2), new Location(x+1, y+1)).collect(Collectors.toSet());
+        Set<Location> criticalRightLocations = Stream.of(new Location(x+1, y-1), new Location(x+2, y), new Location(x+1, y+1)).collect(Collectors.toSet());
+
+        if (movableDirections.contains(Hazard.Targettability.LEFT) && secondLevelHazards.stream().anyMatch(hazard -> criticalLeftLocations.contains(hazard.getLocation()))) {
+
+            secondaryHazardMovableDirections.remove(Hazard.Targettability.LEFT);
+        }
+        if (movableDirections.contains(Hazard.Targettability.RIGHT) && secondLevelHazards.stream().anyMatch(hazard -> criticalRightLocations.contains(hazard.getLocation()))) {
+            secondaryHazardMovableDirections.remove(Hazard.Targettability.RIGHT);
+        }
+
+        if (movableDirections.contains(Hazard.Targettability.UP) && secondLevelHazards.stream().anyMatch(hazard -> criticalUpLocations.contains(hazard.getLocation()))) {
+            secondaryHazardMovableDirections.remove(Hazard.Targettability.UP);
+        }
+
+        if (movableDirections.contains(Hazard.Targettability.DOWN) && secondLevelHazards.stream().anyMatch(hazard -> criticalDownLocations.contains(hazard.getLocation()))) {
+            secondaryHazardMovableDirections.remove(Hazard.Targettability.DOWN);
+        }
+
+        return secondaryHazardMovableDirections;
     }
 
     private OutputInstructionDTO kebabCase(Set<Hazard> visiblePhantom, Set<Hazard> visiblePlayers) {
