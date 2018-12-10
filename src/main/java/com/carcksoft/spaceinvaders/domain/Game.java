@@ -100,9 +100,8 @@ public class Game {
         });
     }
 
-
     //------------------- DDD ENTITY CALCULATIONS -------------------
-    private Hazard.Targettability calculateTargettability(Location location) {
+    public Hazard.Targettability calculateTargettability(Location location) {
 
         int playerX = playerLocation.getX();
         int playerY = playerLocation.getY();
@@ -115,10 +114,10 @@ public class Game {
 
         if (signX == 0 || signY == 0) {
 
-            for (;x != playerX && y != playerY;) {
+            for (;x != playerX ^ y != playerY;) {
 
-                x = x - signX;
-                y = y - signY;
+                x = x + signX;
+                y = y + signY;
 
                 if (board[y][x].equals(LayoutEntity.WALL)) {
                     return Hazard.Targettability.NOPE;
@@ -143,54 +142,17 @@ public class Game {
         }
 
         return Hazard.Targettability.NOPE;
-
-        /**
-        if (x == playerX) {
-
-            if (isTargetForCoordinate(x, y, targetX)) {
-                return true;
-            }
-
-            while (x != playerX) {
-
-                x = x - Integer.signum(x - playerX);
-                if (board[y][x].equals(LayoutEntity.WALL)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        if (y == playerY) {
-
-            while (y != playerY) {
-
-                y = y - Integer.signum(y - playerY);
-                if (board[y][x].equals(LayoutEntity.WALL)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-
-         **/
     }
 
     private boolean calculateWithinRoom(Location location) {
 
-        //TODO complete code
+        //TODO complete code ?¿
 
-        return false;
+        return true;
     }
 
     private int calculateDistance(Location location) {
 
-        //TODO complete code
-
-        return 0;
+        return Math.abs(location.getX() - playerLocation.getX()) + Math.abs(location.getY() - playerLocation.getY());
     }
 }

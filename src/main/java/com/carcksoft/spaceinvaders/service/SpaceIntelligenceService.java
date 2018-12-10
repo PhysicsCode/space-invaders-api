@@ -23,25 +23,6 @@ public class SpaceIntelligenceService {
         game = gameService.updateLayoutKnowledge(input, game);
 
         //Calculate dangerousness/profitability of the position
-        Strategy strategy = strategyService.defineStepStrategy(game);
-
-        switch (strategy) {
-
-            case DANGER:
-
-                return strategyService.processDangers(game);
-
-            case PROFIT:
-
-                return strategyService.achieveProfit(game);
-
-            case NON_PROFIT:
-
-                return strategyService.moveTowardsProfit(game);
-
-            default:
-
-                return strategyService.returnDefaultMove(game);
-        }
+        return strategyService.defineMoveByGame(game, input.getPlayerDTO().getCanFire());
     }
 }
