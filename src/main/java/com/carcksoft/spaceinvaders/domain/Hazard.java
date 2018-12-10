@@ -21,6 +21,9 @@ public class Hazard {
     public Hazard(Location location, boolean active, Targettability targettable, int distanceToPlayer, boolean withinRoom) {
         this.location = location;
         this.active = active;
+        this.targettable = targettable;
+        this.distanceToPlayer = distanceToPlayer;
+        this.withinRoom = withinRoom;
     }
 
     public enum Targettability {

@@ -20,11 +20,11 @@ public class StrategyService {
         //Player on sight
         Set<Hazard> playersOnSight = game.getEnemyPlayerSet().stream()
                                 .filter(hazard -> !hazard.getTargettable().equals(Hazard.Targettability.NOPE))
-                                .collect(Collectors.toSet());
+                                .collect(Collectors.toCollection(HashSet::new));
 
         Set<Hazard> phantomsOnSight = game.getPhantomSet().stream()
                                 .filter(hazard -> !hazard.getTargettable().equals(Hazard.Targettability.NOPE))
-                                .collect(Collectors.toSet());
+                                .collect(Collectors.toCollection(HashSet::new));
 
         Map<Hazard, Hazard.Targettability> phantomsTouching = phantomsOnSight.stream()
                                 .filter(hazard -> hazard.getDistanceToPlayer() == 1)
@@ -114,13 +114,14 @@ public class StrategyService {
             }
 
         //calculate safe locations near and move towards one
-        } else {
-            Hazard.Targettability target = calculateFreeDirectionToRun(contactMap);
-
-            if (target != null) {
-                return targettableToMoveInstruction(target);
-            }
         }
+
+        Hazard.Targettability target = calculateFreeDirectionToRun(contactMap);
+
+        if (target != null) {
+            return targettableToMoveInstruction(target);
+        }
+
         return null;
     }
 

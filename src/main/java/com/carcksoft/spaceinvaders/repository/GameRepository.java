@@ -23,7 +23,7 @@ public class GameRepository{
 
     public Game retrieveGame(String id, Sizing sizing) {
 
-        return Optional.of(gameMap.get(id)).orElseGet(() -> {
+        return Optional.ofNullable(gameMap.get(id)).orElseGet(() -> {
             Game game =  new Game(id, sizing);
             gameMap.put(id, game);
             return game;
