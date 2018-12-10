@@ -1,10 +1,10 @@
 package com.carcksoft.spaceinvaders.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class Hazard {
 
     private Location location;
