@@ -95,10 +95,14 @@ public class StrategyService {
                         return kebabCase(phantomsOnSight, playersOnSight);
                     }
                 //1 active one close
-                } else if (phantomsTouching.size() == 1) {
+                } else if (phantomsTouching.size() == 1 && !contactMap.get(phantomsTouching.keySet().stream().findFirst().get()).equals(StuffInContact.NEUTRAL_PHANTOM)) {
 
                     //shoot it
                     return targettableToShootInstruction(phantomsTouching.values().stream().findFirst().get());
+
+                } else if (phantomsTouching.size() == 1 && contactMap.get(phantomsTouching.keySet().stream().findFirst().get()).equals(StuffInContact.NEUTRAL_PHANTOM)) {
+
+                    return targettableToMoveInstruction(phantomsTouching.values().stream().findFirst().get());
 
                 //2+ active in line
                 } else if (canRunFromPhantoms(contactMap)) {
@@ -183,8 +187,10 @@ public class StrategyService {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
 
-        return movableDirections.stream().findFirst().orElse(null);
+        ArrayList<Hazard.Targettability> moveList = new ArrayList<>(movableDirections);
+        Collections.shuffle(moveList);
 
+        return Optional.ofNullable(moveList.get(0)).orElse(null);
     }
 
     private OutputInstructionDTO kebabCase(Set<Hazard> visiblePhantom, Set<Hazard> visiblePlayers) {
