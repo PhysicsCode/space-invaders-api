@@ -16,5 +16,7 @@ $(document).on('keypress', function(e) {
         setInstruction('fire-left');
     } else if (e.key == 'd') {
         setInstruction('fire-right');
+    } else if (e.key == 'SpaceBar') {
+        setInstruction(' ')
     }
 });
