@@ -1,0 +1,182 @@
+<html lang="en">
+<head>
+    <title>Welcome to the hacking toolsite</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+
+<div>
+    <table>
+        <tr>
+            <th><div id="realTimeMap" class="map-box"></div></th>
+            <th>
+                <div>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="connect">WebSocket connection:</label>
+                            <button id="connect" class="btn btn-default" type="submit">Connect</button>
+                            <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                            </button>
+                        </div>
+                    </form>
+                    <br>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="activateHack">Activate Instruction Hack:</label>
+                            <button id="activateHack" class="btn btn-default" type="submit">Activate</button>
+                            <button id="deactivateHack" class="btn btn-default" type="submit" disabled="disabled">Deactivate</button>
+                        </div>
+                    </form>
+                    <br>
+                    Active instruction : <span id="activeInstruction"></span> <br>
+                    Hack tool is <span id="isActive"></span><br>
+                </div>
+            </th>
+        </tr>
+    </table>
+</div>
+
+
+
+
+<div class="controller">
+    <table class="controller-table">
+        <colgroup>
+            <col style = "width:20%">
+            <col style = "width:20%">
+            <col style = "width:20%">
+            <col style = "width:20%">
+            <col style = "width:20%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <th></th>
+                <th></th>
+                <th><button class="fire-b" type="button" onclick="setInstruction('f-up')">F-UP!</button></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th><button type="button" onclick="setInstruction('up')">UP!</button></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th><button class="fire-b" type="button" onclick="setInstruction('f-left')">F-LEFT!</button></th>
+                <th><button type="button" onclick="setInstruction('left')">LEFT!</button></th>
+                <th></th>
+                <th><button type="button" onclick="setInstruction('right')">RIGHT!</button></th>
+                <th><button class="fire-b" type="button" onclick="setInstruction('f-right')">F-RIGHT!</button></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th><button type="button" onclick="setInstruction('down')">DOWN!</button></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <<th><button class="fire-b" type="button" onclick="setInstruction('f-down')">F-DOWN!</button></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+</body>
+
+
+<script type="text/javascript">
+    //setInterval("getInstruction()",200);
+
+    function setInstruction(instruction){
+
+        $.ajax({url: "/hack/instruction", type: "post", data: instruction, contentType: 'text/html'});
+    }
+
+    function getInstruction() {
+
+        $.get("/hack/instruction", function(data) {
+            $("#activeInstruction").html(data);
+        });
+    }
+
+    function getMap() {
+
+        $.get("/hack/map", function(data) {
+            $("#realTimeMap").html(data);
+        });
+    }
+
+    function getIsActive() {
+
+        $.get("/hack/activator", function(data) {
+            $("#isActive").html(data);
+        });
+    }
+
+    function getCanFire() {
+
+        $.get("/hack/fire", function(canFire) {
+
+            if (canFire == "true") {
+                activateFireButtons();
+            } else {
+                deactivateFireButtons();
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        getInstruction();
+        getMap();
+        getIsActive();
+        getCanFire();
+        connect();
+    });
+</script>
+
+<style>
+
+    .map-box {
+        background-color: lightgrey;
+        padding: 2px;
+        margin-right: 30px;
+        font-family: monospace;
+        font-size: 23px;
+        line-height: 14px;
+        width: fit-content;
+    }
+
+    .controller{
+        width: -webkit-fill-available;
+    }
+
+    .controller-table{
+        width: -webkit-fill-available;
+    }
+
+
+    button{
+        width: -webkit-fill-available;
+        margin-top: 10px;
+    }
+
+</style>
+
+<style name="MenuText">
+    <item name="android:fontFamily">monospace</item>
+</style>
+</html>

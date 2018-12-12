@@ -7,5 +7,9 @@ public enum LayoutEntity {
 
     WALL,
     EMPTY,
-    UNKNOWN
+    UNKNOWN,
+    PLAYER,
+    PHANTOM,
+    NEUTRAL_PHANTOM,
+    MYSELF
 }

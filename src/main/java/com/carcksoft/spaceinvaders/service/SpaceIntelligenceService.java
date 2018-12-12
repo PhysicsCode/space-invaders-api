@@ -13,6 +13,8 @@ public class SpaceIntelligenceService {
 
     private final GameService gameService;
     private final StrategyService strategyService;
+    private final HackBean hackBean;
+    private final HackBeanUpdater hackBeanUpdater;
 
     public OutputInstructionDTO calculateNextStep(SpaceInvadersInputDTO input) {
 
@@ -22,7 +24,25 @@ public class SpaceIntelligenceService {
         //Update all structure parameters
         game = gameService.updateLayoutKnowledge(input, game);
 
-        //Calculate dangerousness/profitability of the position
-        return strategyService.defineMoveByGame(game, input.getPlayerDTO().getCanFire());
+        //Update HackBean
+
+        hackBeanUpdater.updateHackBean(hackBean, game, input.getPlayerDTO().getCanFire());
+        //UseHackBean if activated
+
+        if (hackBean.isActive()) {
+
+            try {
+                Thread.sleep(800);
+                //Retrieve instruction
+                return hackBean.getInstruction();
+            } catch (InterruptedException e) {
+                return strategyService.defineMoveByGame(game, input.getPlayerDTO().getCanFire());
+            }
+
+        } else {
+
+            //Else, move with AI - Calculate instruction by algorithm
+            return strategyService.defineMoveByGame(game, input.getPlayerDTO().getCanFire());
+        }
     }
 }
