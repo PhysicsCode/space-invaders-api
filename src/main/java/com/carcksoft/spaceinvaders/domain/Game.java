@@ -70,8 +70,8 @@ public class Game {
 
     public void fillBoardVoids(VisibleArea visibleArea) {
 
-        for (int i = visibleArea.getStartX(); i < visibleArea.getEndX(); i++) {
-            for (int j = visibleArea.getStartY(); j < visibleArea.getEndY(); j++) {
+        for (int j = visibleArea.getStartY(); j < visibleArea.getEndY(); j++) {
+            for (int i = visibleArea.getStartX(); i < visibleArea.getEndX(); i++) {
 
                 if (board[j][i].equals(LayoutEntity.UNKNOWN)) {
                     board[j][i] = LayoutEntity.EMPTY;

@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum OutputInstructionDTO {
 
+    NONE(""),
     UP("up"),
     DOWN("down"),
     LEFT("left"),

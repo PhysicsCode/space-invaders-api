@@ -24,20 +24,27 @@ public class HackBeanUpdater {
     }
 
 
-    private String calculateAscii(Game game) {
+    public static String calculateAscii(Game game) {
 
         LayoutEntity[][] board = cloneArray(game.getBoard());
 
-        board[game.getPlayerLocation().getY()][game.getPlayerLocation().getX()] = LayoutEntity.MYSELF;
+        if (game.getPlayerLocation() != null) {
+            board[game.getPlayerLocation().getY()][game.getPlayerLocation().getX()] = LayoutEntity.MYSELF;
+        }
 
-        game.getPhantomSet().stream().map(Hazard::getLocation).forEach(location -> board[location.getY()][location.getX()] = LayoutEntity.PHANTOM);
-        game.getEnemyPlayerSet().stream().map(Hazard::getLocation).forEach(location -> board[location.getY()][location.getX()] = LayoutEntity.PLAYER);
+        if (!game.getPhantomSet().isEmpty()) {
+            game.getPhantomSet().stream().map(Hazard::getLocation).forEach(location -> board[location.getY()][location.getX()] = LayoutEntity.PHANTOM);
+        }
+
+        if (!game.getPhantomSet().isEmpty()) {
+            game.getEnemyPlayerSet().stream().map(Hazard::getLocation).forEach(location -> board[location.getY()][location.getX()] = LayoutEntity.PLAYER);
+        }
 
         StringBuffer buffer = new StringBuffer();
 
-        for (int i = 0; i<board[0].length; i++) {
+        for (int j = 0; j< board.length; j++) {
 
-            for (int j = 0; j< board.length; j++) {
+            for (int i = 0; i<board[0].length; i++) {
 
                 switch(board[j][i]) {
 
@@ -45,7 +52,7 @@ public class HackBeanUpdater {
                         buffer.append("■");
                         break;
                     case EMPTY:
-                        buffer.append(" ");
+                        buffer.append(".");
                         break;
                     case UNKNOWN:
                         buffer.append("□");
@@ -80,7 +87,7 @@ public class HackBeanUpdater {
         simpMessagingTemplate.convertAndSend("topic/fire", hackBean.getCanFire());
     }
 
-    private LayoutEntity[][] cloneArray(LayoutEntity[][] src) {
+    private static LayoutEntity[][] cloneArray(LayoutEntity[][] src) {
         int length = src.length;
         LayoutEntity[][] target = new LayoutEntity[length][src[0].length];
         for (int i = 0; i < length; i++) {

@@ -37,8 +37,8 @@ public class HackBeanController {
     public String setInstruction(@RequestBody String instruction) {
 
         hackBean.setInstruction(OutputInstructionDTO.get(instruction));
-        simpMessagingTemplate.convertAndSend("/topic/instruction", getInstruction());
-        return getInstruction();
+        simpMessagingTemplate.convertAndSend("/topic/instruction", instruction);
+        return instruction;
     }
 
     @GetMapping("/map")

@@ -29,4 +29,22 @@ public class HackBean {
                                 "■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■<br>";
     private String canFire = "false";
 
+    public OutputInstructionDTO getInstruction() {
+
+        OutputInstructionDTO returnable = this.instruction;
+
+        if (returnable.equals(OutputInstructionDTO.F_UP) ||
+                returnable.equals(OutputInstructionDTO.F_DOWN) ||
+                returnable.equals(OutputInstructionDTO.F_LEFT) ||
+                returnable.equals(OutputInstructionDTO.F_RIGHT)) {
+
+            resetInstruction();
+        }
+        return returnable;
+    }
+
+    private void resetInstruction() {
+        this.instruction = OutputInstructionDTO.NONE;
+
+    }
 }

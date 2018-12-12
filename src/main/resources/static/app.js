@@ -27,7 +27,7 @@ function connect() {
             setActivated(active.body == "true");
         });
         stompClient.subscribe('/topic/fire', function (fire) {
-            if (fire) {
+            if (fire.body == "true") {
                 activateFireButtons();
             } else {
                 deactivateFireButtons();
