@@ -32,7 +32,7 @@ public class SpaceIntelligenceService {
         if (hackBean.isActive()) {
 
             try {
-                Thread.sleep(800);
+                Thread.sleep(1200);
                 //Retrieve instruction
                 return hackBean.getInstruction();
             } catch (InterruptedException e) {

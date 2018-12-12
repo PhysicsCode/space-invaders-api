@@ -7,6 +7,7 @@
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/app.js"></script>
+    <script src="/keys.js"></script>
 </head>
 <body>
 
@@ -71,7 +72,7 @@
             <tr>
                 <th><button class="fire-b" type="button" onclick="setInstruction('fire-left')">F-LEFT!</button></th>
                 <th><button type="button" onclick="setInstruction('left')">LEFT!</button></th>
-                <th></th>
+                <th><button type="button" onclick="setInstruction(' ')">NONE</button></th>
                 <th><button type="button" onclick="setInstruction('right')">RIGHT!</button></th>
                 <th><button class="fire-b" type="button" onclick="setInstruction('fire-right')">F-RIGHT!</button></th>
             </tr>

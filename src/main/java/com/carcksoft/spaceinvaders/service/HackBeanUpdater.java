@@ -84,7 +84,7 @@ public class HackBeanUpdater {
 
     private void sendFireUpdates(HackBean hackBean){
 
-        simpMessagingTemplate.convertAndSend("topic/fire", hackBean.getCanFire());
+        simpMessagingTemplate.convertAndSend("/topic/fire", hackBean.getCanFire());
     }
 
     private static LayoutEntity[][] cloneArray(LayoutEntity[][] src) {
