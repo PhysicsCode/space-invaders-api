@@ -68,10 +68,14 @@ function showActive(active) {
 
 function activateFireButtons() {
     $(".fire-b").prop("disabled", false);
+    $("#can-fire").css("display", "block");
+    $("#cant-fire").css("display", "none");
 }
 
 function deactivateFireButtons() {
     $(".fire-b").prop("disabled", true);
+    $("#can-fire").css("display", "none");
+    $("#cant-fire").css("display", "block");
 }
 
 $(function () {
