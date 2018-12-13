@@ -17,7 +17,7 @@ public class PlayerInfoOutput {
     public static PlayerInfoOutput defaultPojo() {
 
         return new PlayerInfoOutput(
-                "Ismael Rodríguez García",
+                "El ******** del mando de la xbox",
                 "ismael.rodriguez@ext.privalia.com");
     }
 }

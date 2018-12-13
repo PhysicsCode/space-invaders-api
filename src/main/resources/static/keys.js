@@ -62,6 +62,9 @@ function pollGamepads() {
             if (gp.buttons[3].pressed) { //UP
                 setInstruction('up');
             }
+            if (gp.buttons[5].pressed) {//NONE
+                setInstruction(' ');
+            }
         }
     }
 };
