@@ -56,7 +56,7 @@
         </colgroup>
         <tbody>
             <tr>
-                <th><div id="can-shoot">OK</div><div id="cant-shoot">KO</div></th>
+                <th><span id="can-fire">OK</span><span id="cant-fire">KO</span></th>
                 <th></th>
                 <th><button class="fire-b" type="button" onclick="setInstruction('fire-up')">F-UP!</button></th>
                 <th></th>
@@ -169,11 +169,11 @@
         width: -webkit-fill-available;
     }
 
-    #can-shoot{
+    #can-fire{
         background-color: green;
     }
 
-    #cant-shoot{
+    #cant-fire{
         background-color: red;
     }
 
@@ -181,6 +181,7 @@
     button{
         width: -webkit-fill-available;
         margin-top: 10px;
+        height: 75px;
     }
 
 </style>
